@@ -37,12 +37,11 @@ public enum MCState {idle, run}
         float inputX = Input.GetAxis("Horizontal");
         bool isWalking = Mathf.Abs(inputX) > 0;
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        bool jumpPressed = Input.GetButtonDown("jump");
+        bool jumpPressed = Input.GetButtonDown("Jump");
 
         if (jumpPressed)
         {
             jump = true;
-
         }
         else
         {
@@ -66,11 +65,13 @@ public enum MCState {idle, run}
         {
             animator.SetInteger("MCState", (int)MCState.idle);
         }
+
         if(jump && isGrounded)
         {
             //no animation yet.   // animator.SetInteger("MCState", (int)MCState.jump);
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0f, jumpForce));
+            Debug.Log("jumped");
         }
 
     }
