@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-public enum MCState {idle, run}
+public enum MCState {idle, run, dead}
 
     public MCState currentMCState;
     private Animator animator;
@@ -12,6 +12,8 @@ public enum MCState {idle, run}
 
     public float forceX = 50f;
     private bool FaceRight;
+
+    private bool dead;
 
     private bool jump;
     public float jumpForce = 3f;
@@ -24,6 +26,7 @@ public enum MCState {idle, run}
     public Transform spawnPoint;
     void Start()
     {
+        dead = false;
         currentMCState = MCState.idle;
         animator = GetComponent<Animator>();
         animator.SetInteger("MCState", (int)MCState.idle);
@@ -32,7 +35,12 @@ public enum MCState {idle, run}
         FaceRight = true;
     }
 
-    void FixedUpdate()
+    private void Update()
+    {
+        Dead();
+    }
+
+    public void FixedUpdate()
     {
         float inputX = Input.GetAxis("Horizontal");
         bool isWalking = Mathf.Abs(inputX) > 0;
@@ -74,7 +82,33 @@ public enum MCState {idle, run}
             Debug.Log("jumped");
         }
 
+        if(dead == true)
+        {
+            Debug.Log("dead");
+            StartCoroutine(DeadSeq());
+    
+        }
+
+
     }
+
+    IEnumerator DeadSeq() {
+
+        animator.SetInteger("MCState", (int)MCState.dead);
+        yield return new WaitForSecondsRealtime(1f);
+        gameObject.transform.position = spawnPoint.position;
+        dead = false;
+    }
+
+    private void Dead()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            dead = true;
+        }
+    }
+
+
 
     private void Flip()
     {
