@@ -6,9 +6,12 @@ public class Player : MonoBehaviour
 {
 public enum MCState {idle, run, dead}
 
+    [SerializeField] private LayerMask groundLayerMask;
+
     public MCState currentMCState;
     private Animator animator;
     private Rigidbody2D rb;
+    private BoxCollider2D boxcollider2d;
 
     public float forceX = 50f;
     private bool FaceRight;
@@ -18,13 +21,8 @@ public enum MCState {idle, run, dead}
     private bool jump;
     public float jumpForce = 3f;
 
-    public bool isGrounded;
-    public float groundCheckRadius = .02f;
-    public Transform groundCheck;
-    public LayerMask groundLayer;
-
     public Transform spawnPoint;
-    void Start()
+    void Awake()
     {
         dead = false;
         currentMCState = MCState.idle;
@@ -32,6 +30,7 @@ public enum MCState {idle, run, dead}
         animator.SetInteger("MCState", (int)MCState.idle);
         gameObject.transform.localPosition = spawnPoint.localPosition;
         rb = GetComponent<Rigidbody2D>();
+        boxcollider2d = GetComponent<BoxCollider2D>();
         FaceRight = true;
     }
 
@@ -44,7 +43,6 @@ public enum MCState {idle, run, dead}
     {
         float inputX = Input.GetAxis("Horizontal");
         bool isWalking = Mathf.Abs(inputX) > 0;
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         bool jumpPressed = Input.GetButtonDown("Jump");
 
         if (jumpPressed)
@@ -74,11 +72,10 @@ public enum MCState {idle, run, dead}
             animator.SetInteger("MCState", (int)MCState.idle);
         }
 
-        if(jump && isGrounded)
+        if(isGrounded() && jump)
         {
             //no animation yet.   // animator.SetInteger("MCState", (int)MCState.jump);
-            rb.velocity = new Vector2(rb.velocity.x, 0);
-            rb.AddForce(new Vector2(0f, jumpForce));
+            rb.velocity = Vector2.up * jumpForce;
             Debug.Log("jumped");
         }
 
@@ -88,7 +85,6 @@ public enum MCState {idle, run, dead}
             StartCoroutine(DeadSeq());
     
         }
-
 
     }
 
@@ -100,6 +96,13 @@ public enum MCState {idle, run, dead}
         dead = false;
     }
 
+    private bool isGrounded()
+    {
+        RaycastHit2D raycasthit2d = Physics2D.BoxCast(boxcollider2d.bounds.center, boxcollider2d.bounds.size, 0f, Vector2.down, .1f, groundLayerMask);
+        Debug.Log(raycasthit2d.collider);
+        return raycasthit2d.collider != null;
+    }
+
     private void Dead()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -108,8 +111,6 @@ public enum MCState {idle, run, dead}
         }
     }
 
-
-
     private void Flip()
     {
         FaceRight = !FaceRight;
@@ -117,5 +118,8 @@ public enum MCState {idle, run, dead}
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+
+
 
 }
