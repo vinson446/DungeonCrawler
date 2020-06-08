@@ -4,22 +4,26 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-public enum MCState {idle, run, dead}
+public enum MCState {idle, run, dead, attack}
 
     [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private GameObject hitRange;
 
     public MCState currentMCState;
     private Animator animator;
     private Rigidbody2D rb;
     private BoxCollider2D boxcollider2d;
 
+
     public float forceX = 50f;
     private bool FaceRight;
 
-    private bool dead;
+    public bool dead;
 
     private bool jump;
     public float jumpForce = 3f;
+
+    PlayerStats playerstats;
 
     public Transform spawnPoint;
     void Awake()
@@ -32,11 +36,16 @@ public enum MCState {idle, run, dead}
         rb = GetComponent<Rigidbody2D>();
         boxcollider2d = GetComponent<BoxCollider2D>();
         FaceRight = true;
+        playerstats = GetComponent<PlayerStats>();
     }
 
     private void Update()
     {
-        Dead();
+        Attack();
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            playerstats.Health = 0;
+        }
     }
 
     public void FixedUpdate()
@@ -93,6 +102,7 @@ public enum MCState {idle, run, dead}
         animator.SetInteger("MCState", (int)MCState.dead);
         yield return new WaitForSecondsRealtime(1f);
         gameObject.transform.position = spawnPoint.position;
+        playerstats.Health = 100;
         dead = false;
     }
 
@@ -108,6 +118,23 @@ public enum MCState {idle, run, dead}
         if (Input.GetKeyDown(KeyCode.P))
         {
             dead = true;
+        }
+    }
+
+    IEnumerator AttackPattern()
+    {
+        animator.Play("MC_Attack");
+        hitRange.SetActive(true);
+        yield return new WaitForSecondsRealtime(3f);
+        hitRange.SetActive(false);
+    }
+
+    private void Attack()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            StartCoroutine(AttackPattern());
+
         }
     }
 

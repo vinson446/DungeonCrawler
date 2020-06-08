@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Dummy : MonoBehaviour
 {
-    [SerializeField] GameObject slash;
     Animator animator;
-    bool damaged;
+   public bool damaged;
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,12 +20,11 @@ public class Dummy : MonoBehaviour
 
     }
 
-    void isDamaged()
+   public void isDamaged()
     {
-        if (Input.GetKeyDown(KeyCode.X))
+        if (damaged == true)
         {
             animator.Play("Dummy_Damaged");
-            slash.SetActive(true);
         }
     }
 
