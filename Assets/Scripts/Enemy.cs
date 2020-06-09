@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerStats))]
-public class Enemy : Interactable
+public class Enemy : MonoBehaviour
 {
     Player player;
     PlayerStats myStats;
@@ -13,14 +13,14 @@ public class Enemy : Interactable
         myStats = GetComponent<PlayerStats>();
     }
 
-    public override void Interact()
+    private void Update()
     {
-        base.Interact();
         PlayerAttack playerattack = player.GetComponent<PlayerAttack>();
-        if(playerattack != null)
+        if (playerattack != null)
         {
             playerattack.Attack(myStats);
         }
 
     }
+
 }

@@ -4,8 +4,5 @@ using UnityEngine;
 
 public class EnemyStats : PlayerStats
 {
-public override Die()
-    {
-        base.Die;
-    }
+
 }

@@ -17,4 +17,13 @@ public class PlayerAttack : MonoBehaviour
     {
         targetStats.TakeDamage(myStats.damage.GetValue());
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Dummy"))
+        {
+            other.GetComponent<Dummy>().isDamaged();
+        }
+    }
+
 }

@@ -1342,6 +1342,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1331146577}
   - component: {fileID: 1331146578}
+  - component: {fileID: 1331146580}
+  - component: {fileID: 1331146579}
   m_Layer: 0
   m_Name: Attack Range
   m_TagString: Untagged
@@ -1389,6 +1391,33 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &1331146579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331146576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34759dce405e7aa45b0beb8bd8fa3e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1331146580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331146576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27d845917e746ca40ba259a9556d1200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 100
+  damage:
+    baseValue: 1
 --- !u!1 &1463121967
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,7 +2306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dcfe0a95629ef4e906f5c1a6acc579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damaged: 0
 --- !u!1 &2095120769
 GameObject:
   m_ObjectHideFlags: 0
